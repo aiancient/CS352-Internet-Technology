@@ -1,0 +1,138 @@
+For this project you will be sending an email to a real email server. It is a relivivly straightforward project worth 7 pts. I have included a file that takes in the arguments for you to use. The goal is to use those arguments to send any email to a real email server using SMTP.
+
+The main goal is to have an SMTP conversation. The conversation you will be having looks like the example conversation from the RFC (you are C, you will recieve the S messages):
+      S: 220 foo.com Simple Mail Transfer Service Ready
+      C: HELO bar.com
+      S: 250-foo.com greets bar.com
+      C: MAIL FROM:<Smith@bar.com>
+      S: 250 OK
+      C: RCPT TO:<Brown@foo.com>
+      S: 250 OK
+      C: DATA
+      S: 354 Start mail input; end with <CRLF>.<CRLF>
+      C: Blah blah blah...
+      C: ...etc. etc. etc.
+      C: .
+      S: 250 OK
+      C: QUIT
+      S: 221 foo.com Service closing transmission channel
+
+You will need to end every line with "\r\n" instead of the usual "\n" Note that sometimes you will need to wait to get a response from the server, and sometimes you will need to just send the next message (when sending the data).
+
+To simplify things, you will only need to communicate with the gmail server at gmail-smtp-in.l.google.com. you may need to make a gmail address for testing, though I think your existing scarletmail account will also work. 
+Remeber to include "" around the subject line
+
+Remeber that smtp uses port 25
+
+HEADERS:
+You will need 4 headers, From, To, Message-ID and Subject. The headers are each on their own line followed by a colon, like in the example conversation bellow.
+
+MESSAGE ID:
+You will need to generate a message id header. It will look as follows:
+
+Message-ID: <CURRENT_TIME@CURRENTDOMAIN>
+
+This might be, for example:
+
+Message-ID: <121241.1@cd.cs.rutgers.edu>
+
+ILAB MACHINES:
+This project is particulalry unlikely to work on a non-ilab machine, use the ilab machines for all testing
+
+LINE ENDING:
+All lines, including headers must end in "\r\n" for the protocol to work
+
+YOUR ADDRESS:
+socket.gethostname() should be used whenever you need to say who you are, for example in the "From" header and in the message-ID header.
+
+EXAMPLE CONVERSATION:
+
+Here is a full example conversation when sending an email. Assume the email.txt contains the words "all the lines from line 57 to 74 are auto generating? or we need to type them in?'\nHello World\nBlah Test" and the program is invoked with the following line (replace TEST_EMAIL with a working gmail or scarletmail account):
+
+python SMTP_sender.py email.txt "This is a test message" TEST_EMAIL abraham
+Here is what sends when that happens:
+
+From Server: b'220 mx.google.com ESMTP g3-20020ac87d03000000b0040359cb66bdsi5836004qtb.473 - gsmtp\r\n'
+To server: b'HELO cd.cs.rutgers.edu\r\n'
+From Server: b'250 mx.google.com at your service\r\n'
+To server: b'MAIL FROM:<abraham@cd.cs.rutgers.edu>\r\n'
+From Server: b'250 2.1.0 OK g3-20020ac87d03000000b0040359cb66bdsi5836004qtb.473 - gsmtp\r\n'
+To server: b'RCPT TO:<TEST_EMAIL>\r\n'
+From Server: b'250 2.1.5 OK g3-20020ac87d03000000b0040359cb66bdsi5836004qtb.473 - gsmtp\r\n'
+To server: b'DATA\r\n'
+From Server: b'354  Go ahead g3-20020ac87d03000000b0040359cb66bdsi5836004qtb.473 - gsmtp\r\n'
+To server: b'From: <abraham@cd.cs.rutgers.edu>\r\n'
+To server: b'Message-ID: <1691470761.4945712@cd.cs.rutgers.edu>\r\n'
+To server: b'To: <imaptestf2022@gmail.com>\r\n'
+To server: b'Subject: This is a test message\r\n'
+To server: b'\r\n'
+To server: b"all the lines from line 57 to 74 are auto generating? or we need to type them in?'\n"
+To server: b'Hello World\n'
+To server: b'Blah Test'
+To server: b'\r\n.\r\n'
+From Server: b'250 2.0.0 OK DMARC:Quarantine 1691470761 g3-20020ac87d03000000b0040359cb66bdsi5836004qtb.473 - gsmtp\r\n'
+To server: b'QUIT\r\n'
+From Server: b'221 2.0.0 closing connection g3-20020ac87d03000000b0040359cb66bdsi5836004qtb.473 - g
+
+
+SPAM:
+Your email may end up in the spam that is completely normal since we are not using any kind of security or authentication.
+
+DEBUGGING SUGGESTION:
+I suggest you print every line you send or receive so that you can see what is going on. This is not required, but will make the coding much easier.
+
+How we will test your programs
+------------------------------
+
+
+As part of your submission, you will turn in one program:SMTP_sender.py and one README file (more on this below).
+ We will be running the two programs on the ilab machines with Python 3 (ideally 3.8). Information about how to use and access the machines will be provided in lecture.
+
+
+
+python SMTP_sender.py EMAIL_FILE "SUBJECT LINE" TEST_EMAIL USERNAME
+
+
+An example of this would be:
+python SMTP_sender.py email.txt "this is an email sent by python" netid@scarletmail.rutgers.edu abraham
+
+After the program runs an email with the given details should apear in the inbox (or spam folder) of the destination address.
+
+Academic Dishonesty:
+
+Code coppied from anywhere will be dealt with according to the Rutgers Academic Dishonesty policy.
+If the copied code's source is referenced, the maximum penalty will be 50% off the given assingment, 
+and as little as nothing depending on how much was copied and whether you had the license.
+
+If the code is not cited, and makes up a substantial portion of the project, the MINIMUM penalty will be
+a zero on the assignment.
+
+
+README file
+-----------
+
+
+In addition to your programs, you must also submit a README file (named README.txt) with clearly
+delineated sections for the following.
+
+
+0. Please write down the full names and netids of both your team members.
+1. Are there known issues or functions that aren't working currently in your
+   attached code? If so, explain. (note that you will get half credit for any reasonably sized bug that is fully explained in the readme)
+2. Collaboration: Who did you collaborate with on this project? What resources and refer-
+ences did you consult? Please also specify on what aspect of the project you collaborated or
+consulted.
+3. What problems did you face developing code for this project? Around how long did you spend on this project (This helps me decide what I need to explain more clearly for the next projects)
+
+
+Submission
+----------
+
+
+Turn in your project on Canvas assignments. Only one team member should submit. 
+Please submit your final project as a single zip file with the exact following files inside it
+ (the readme should be a txt file)(Note caps in file and folder names).
+
+Project_3
+   -- SMTP_sender.py
+   -- README.txt

@@ -1,0 +1,3 @@
+Hello world.
+This is a test email.
+Please send it to its destination.

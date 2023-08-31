@@ -1,0 +1,6 @@
+åÿ¡:This one should work as normal
+?This string has the wrong checksum
+This one forgot its checksum altogether
+4]this one shOuld be normal again
+  THIS ONE left the checksum as zero
+FThIS oNe IS ranDOM
